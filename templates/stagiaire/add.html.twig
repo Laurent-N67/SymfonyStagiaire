@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout d'un stagiaire{% endblock %}
+
+{% block body %}
+
+    <h1>Ajouter un stagiaire</h1>
+    {# {{ form(formStagiaire) }} #}
+
+    {{ form_start(formStagiaire) }}
+        <div class="row">
+            <div class="col">
+                {{ form_row(formStagiaire.nomStagiaire) }}
+            </div>
+            <div class="col">
+                {{ form_row(formStagiaire.prenomStagiaire) }}
+            </div>
+        </div>
+    
+    {{ form_end(formStagiaire) }}
+
+{% endblock %}

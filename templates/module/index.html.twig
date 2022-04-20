@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des modules{% endblock %}
+
+{% block body %}
+
+    <h1>Liste des modules</h1>
+    
+    
+    <p>Il y a {{modules | length }} modules</p>
+
+    {% for module in modules %}
+    <a href="{{ path('show_module', {'id': module.id}) }}">{{ module }}<br></a>
+    {% endfor %}
+    <a href="{{ path('add_module') }}">Ajouter un module</a>
+{% endblock %}

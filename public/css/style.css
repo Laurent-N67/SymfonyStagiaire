@@ -1,0 +1,13 @@
+th{
+    text-align: center;
+}
+td{
+    text-align: center;
+}
+.centrer{
+    text-align: center;
+}
+.droite{
+    position: absolute;
+    right: 2em;
+}

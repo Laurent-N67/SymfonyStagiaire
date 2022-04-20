@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail d'une session{% endblock %}
+
+{% block body %}
+{% if is_granted('USER_ADMIN') %}
+   
+    <h1>{{ sessions }}</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th colspan="2"><h2>Liste des Stagiaire</h2></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if (sessions.inscriptions | length) != 0 %}
+        {% for stagiaire in sessions.inscriptions %}
+            <tr>
+                <td><a href="{{ path('show_stagiaire', {'id': stagiaire.id}) }}"> {{stagiaire}}</a></td>
+                <td><a href="{{ path('removeStagiaire_session', {'idStagiaire':stagiaire.id, 'idSession':sessions.id}) }}">Retirer de la session</a></td>    
+            </tr>
+        {% endfor %}
+        {% else %}
+            <tr>
+                <td>Il n'y a aucun stagiaire  inscrit a cette session.</td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+    
+        
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th colspan="2"><h2>Liste des stagiaire non-inscrits a la formation</h2></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if (nonInscrits | length) != 0 %}
+        {% for stag in nonInscrits %}
+            <tr>
+                <td><a href="{{ path('show_stagiaire', {'id': stag.id}) }}">{{ stag }}</a></td>
+                <td><a href="{{ path('addStagiaire_session', {'idStagiaire':stag.id, 'idSession':sessions.id}) }}">Ajouter à la session</a></td>    
+            </tr>
+        {% endfor %}
+        {% else %}
+            <tr>
+                <td>Il n'y a aucun stagiaire non inscrit a cette session.</td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th><h2>Formateur referent</h2></th>
+                <th><h2>Formation</h2></th>
+                <th><h2>Durée de la formation</h2></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{sessions.formateur}}</td>
+                <td><a href="{{ path('show_formation', {'id': sessions.formation.id}) }}">{{sessions.formation}}</a></td>
+                <td>Date de début : {{sessions.dateDebut | date("d-m-Y")}} Date de fin : {{sessions.dateFin | date("d-m-Y")}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th><h2>place théorique</h2></th>
+                <th><h2>place restantes</h2></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{sessions.nbPlacesTheorique}}</td>
+                <td>{{sessions.nbPlaceRestante}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th colspan="3"><h2>Liste des modules</h2></th>
+            </tr>
+            <tr>
+                <th><h3>Nom du module</h3></th>
+                <th><h3>Catégorie</h3></th>
+                <th><h3>Durée du module (en jours)</h3></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for module in sessions.planifiers %}
+            <tr>
+                <td><a href="{{ path('show_module', {'id': module.id}) }}">{{module.moduleFormation.nomModule}}</a></td>
+                <td>{{module.moduleFormation.categorie.nomCategorie}}</td>
+                <td>{{module.duree}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <h2>page reservé aux administateurs</h2>
+{% endif %}
+
+{% endblock %}
