@@ -3,7 +3,7 @@
 {% block title %}Liste des stagiaires{% endblock %}
 
 {% block body %}
-{% if is_granted('ROLE_ADMIN') %}
+
 
     <h1>Liste des stagiaires</h1>
     <a href="{{ path('add_stagiaire') }}">Ajouter un stagiaire</a>
@@ -22,7 +22,5 @@
         <p>Il n'y a pas de stagiaires!</p>
      {% endif %}
     
-    {% else %}
-        <h2>Vous n'etes pas administateur</h2>
-    {% endif %}
+
 {% endblock %}

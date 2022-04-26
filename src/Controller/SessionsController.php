@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Session;
+use App\Entity\Planifier;
 use App\Entity\Stagiaire;
 use App\Form\SessionsType;
 use App\Repository\SessionRepository;
@@ -10,13 +11,17 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
+/**
+ * @IsGranted("ROLE_ADMIN")
+ */
 class SessionsController extends AbstractController
 {
     /**
-     * @Route("/", name="index_sessions")
+     * @Route("/sessions", name="index_sessions")
      */
     public function index(ManagerRegistry $doctrine): Response
     {
@@ -50,7 +55,9 @@ class SessionsController extends AbstractController
         }
 
         return $this->render('sessions/add.html.twig', [
-            'formSessions' => $form->createView()
+            'formSessions' => $form->createView(),
+            'title' => "Ajouter",
+            'sessionId'=>$sessions->getId(), 
             
         ]);
     }
@@ -76,6 +83,7 @@ class SessionsController extends AbstractController
             'nonInscrits' => $nonInscrits
         ]);
     }
+
     /**
      * @Route("/session/{idSession}/addStagiaire/{idStagiaire}", name="addStagiaire_session")
      * @ParamConverter("session", options={"mapping": {"idSession": "id"}})
@@ -110,4 +118,21 @@ class SessionsController extends AbstractController
             'nonInscrits'=>$stagiaireNonInscrits
         ]);
     }
-}
+    /**
+     * @Route("/session{idSession}/removePlanifier/{idPlanifier}", name="removePlanifier_session")
+     * @ParamConverter("session", options={"mapping": {"idSession":"id"}})
+     * @ParamConverter("planifier",options={"mapping":{"idStagiaire":"id"}})
+     */
+    public function removePlanifier(ManagerRegistry $doctrine, Planifier $planifier, Session $session){
+        
+        $entityManager = $doctrine ->getManager();
+        $session->removePlanifier($planifier);
+        $entityManager->flush();
+        $planifierNonInscrits = $doctrine->getRepository(Session::class)->getNonPlanifier($session->getId());
+
+        return $this->render('sessions/show.html.twig',[
+            'sessions'=>$session,
+            'nonPlanifier'=>$planifierNonInscrits
+        ]);
+    }
+}      

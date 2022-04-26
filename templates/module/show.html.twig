@@ -3,7 +3,7 @@
 {% block title %}Détail d'un module{% endblock %}
 
 {% block body %}
-{% if is_granted('USER_ADMIN') %}
+{% if is_granted('ROLE_ADMIN') %}
 
     <h1>{{ modules }}</h1>
 

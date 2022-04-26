@@ -3,7 +3,7 @@
 {% block title %}Détail d'une session{% endblock %}
 
 {% block body %}
-{% if is_granted('USER_ADMIN') %}
+
    
     <h1>{{ sessions }}</h1>
 
@@ -103,8 +103,5 @@
         {% endfor %}
         </tbody>
     </table>
-    {% else %}
-        <h2>page reservé aux administateurs</h2>
-{% endif %}
 
 {% endblock %}

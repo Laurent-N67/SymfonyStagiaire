@@ -46,7 +46,7 @@ class Session
     private $inscriptions;
 
     /**
-     * @ORM\OneToMany(targetEntity=Planifier::class, mappedBy="sessionDuree")
+     * @ORM\OneToMany(targetEntity=Planifier::class, mappedBy="sessionDuree", cascade={"persist"})
      */
     private $planifiers;
 

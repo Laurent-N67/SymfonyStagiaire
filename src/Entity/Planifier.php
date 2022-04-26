@@ -30,7 +30,7 @@ class Planifier
 
     /**
      * @ORM\ManyToOne(targetEntity=Session::class, inversedBy="planifiers")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $sessionDuree;
 
